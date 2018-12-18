@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Mega Prospects Pro</string>
+    <string name="app_name_full">MegaProspects Pro</string>
+    <string name="emeraldsoff">Emeraldsoff</string>
+
+    <string name="signup_login">OR</string>
+    <string name="mega_prospects">LogIn/SignUp</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">SUBMIT</string>
+
+    <string name="enter_10_digit_mobile_number">Enter 10 Digit Mobile Number</string>
+    <string name="sign_in_using_mobile_number">Sign in Using Mobile Number</string>
+    <string name="signup_login_using_google_facebook">null</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="resend_code">Resend Code</string>
+    <!--<string name="other_signin">Sign in Using >></string>-->
+    <string name="other_signin">Sign in Using Mobile Number</string>
+    <string name="country_code_your_mobile_number">Country Code+Your Mobile Number</string>
+    <string name="instruction1">If Your Country Code Is "091" Then Add Your Phone Number As "+91" Followed By Your Mobile Number</string>
+    <string name="instant_validation">Instant Validated</string>
+    <string name="enter_your_phone_number_to_sign_in">Enter Your Phone Number To Sign In</string>
+
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+</resources>
