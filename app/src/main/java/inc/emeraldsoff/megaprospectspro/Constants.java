@@ -37,7 +37,7 @@ public class Constants {
     public static final int MY_PERMISSIONS_READ_PHONE_STATE = 0 ;
     public static final int MY_PERMISSIONS_READ_PHONE_NUMBERS = 0 ;
     public static final int MY_PERMISSIONS_READ_CONTACT = 0 ;
-    public static final int ASK_MULTIPLE_PERMISSION_REQUEST_CODE = 123456;
+    public static final int ASK_MULTIPLE_PERMISSION_REQUEST_CODE = 6;
 
     //ADS APP IDS
     public static final String admob_app_test = "ca-app-pub-3940256099942544/1033173712";

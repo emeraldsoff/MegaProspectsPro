@@ -14,11 +14,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="16dp"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="app_icon"
             android:src="@mipmap/ic_launcher_round" />
 
         <LinearLayout
@@ -26,7 +28,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="16dp">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -47,20 +50,48 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/abeezee_italic"
+        android:maxLines="1"
+        android:textAllCaps="true"
         android:paddingTop="8dp"
         android:text="Welcome, Mr. XYZ"
+        android:textStyle="bold"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/black" />
 
     <TextView
+        android:id="@+id/user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="8dp"
-        android:paddingTop="8dp"
-        android:text="EmailId Or Phone Number"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="EmailId"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/user_phn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:text="Phone Number"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/validinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:text="Validity Info"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         android:textColor="@color/black" />
 </LinearLayout>

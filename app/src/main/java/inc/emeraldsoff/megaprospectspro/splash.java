@@ -1,9 +1,14 @@
 package inc.emeraldsoff.megaprospectspro;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
@@ -16,21 +21,27 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
-//import inc.emeraldsoff.megaprospectspro.appcontrol_ui.EntryActivity;
-import inc.emeraldsoff.megaprospectspro.login.loginactivity;
-import inc.emeraldsoff.megaprospectspro.login.user_regActivity;
-//import inc.emeraldsoff.megaprospectspro.ui_data.MainActivity;
+import inc.emeraldsoff.megaprospectspro.appcontrol_ui.activity_entry;
+import inc.emeraldsoff.megaprospectspro.login.activity_login;
+import inc.emeraldsoff.megaprospectspro.login.activity_user_reg;
+import inc.emeraldsoff.megaprospectspro.ui_data.fragmentHome.activity_home;
+
+//import inc.emeraldsoff.megaprospectspro.appcontrol_ui.activity_entry;
+//import inc.emeraldsoff.megaprospectspro.ui_data.activity_main;
 
 public class splash extends Activity {
 
+    private Context mcontext;
     TextView brand;
     FirebaseAuth.AuthStateListener mAuthlistener;
     FirebaseAuth mAuth;
     String userid;
     private FirebaseFirestore fdb = FirebaseFirestore.getInstance();
     SharedPreferences mpref;
-//    MainActivity x;
+//    activity_main x;
 
     @Override
     protected void onStart() {
@@ -47,45 +58,65 @@ public class splash extends Activity {
                 lname = mpref.getString("LastName", "");
                 mob = mpref.getString("MobileNo", "");
 //                Logger.d("Start splash screen");
-                mAuthlistener = new FirebaseAuth.AuthStateListener() {
-                    @Override
-                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
-                        if (user != null) {
-                            userid = mAuth.getUid();
-                            if (fname.equals("") || lname.equals("") || mob.equals("")) {
-                                try {
-                                    basic_check();
-                                }catch (Exception e){
+                if (isOnline()) {
+                    mAuthlistener = new FirebaseAuth.AuthStateListener() {
+                        @Override
+                        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            if (user != null) {
+                                userid = mAuth.getUid();
+                                if (Objects.requireNonNull(fname).equals("") ||
+                                        Objects.requireNonNull(lname).equals("") ||
+                                        Objects.requireNonNull(mob).equals("")) {
+                                    try {
+                                        basic_check();
+                                    } catch (Exception e) {
 //                                    Crashlytics.getInstance();
 //                                    Crashlytics.log(e.getMessage());
+                                    }
+                                } else {
+                                    if (mpref.getBoolean("IF_SECURE", true)) {
+                                        if (Objects.requireNonNull(mpref.getString("PIN", "")).isEmpty() ||
+                                                Objects.requireNonNull(mpref.getString("PIN", "")).equals("")) {
+                                            startActivity(new Intent(splash.this, activity_home.class));
+                                            finish();
+                                        } else {
+                                            startActivity(new Intent(splash.this, activity_entry.class));
+                                            finish();
+                                        }
+                                    } else {
+                                        startActivity(new Intent(splash.this, activity_home.class));
+                                        finish();
+                                    }
                                 }
+                            } else {
+                                startActivity(new Intent(splash.this, activity_login.class));
+                                finish();
                             }
-                            else {
-//                                if(mpref.getBoolean("IF_SECURE",true)){
-//                                    if(mpref.getString("PIN","").isEmpty()||mpref.getString("PIN","").equals("")){
-////                                        startActivity(new Intent(splash.this, MainActivity.class));
-//                                        finish();
-//                                    }else{
-////                                        startActivity(new Intent(splash.this, EntryActivity.class));
-//                                        finish();
-//                                    }
-//                                }
-//                                else{
-                                    startActivity(new Intent(splash.this, MainActivity.class));
-                                    finish();
-//                                }
-                            }
-                        } else {
-                            startActivity(new Intent(splash.this, loginactivity.class));
-                            finish();
                         }
-                    }
-                };
-                mAuth.addAuthStateListener(mAuthlistener);
+                    };
+                    mAuth.addAuthStateListener(mAuthlistener);
+                } else {
+                    new AlertDialog.Builder(mcontext)
+                            .setTitle("Connectivity Error..!!")
+                            .setMessage("Check your net connection..!!")
+                            .setPositiveButton("Retry..!!", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            });
+                }
             }
         }, SPLASH_DISPLAY_LENGTH);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,9 +125,10 @@ public class splash extends Activity {
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Harlow.ttf");
         brand.setTypeface(typeface);
         mpref = getSharedPreferences("User", MODE_PRIVATE);
+        mcontext = this;
     }
 
-    private void datasync(){
+    private void datasync() {
         DocumentReference docref = fdb.document("prospect_users" + "/" + userid);
         docref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -170,26 +202,39 @@ public class splash extends Activity {
         });
     }
 
-    private void basic_check(){
+    private void basic_check() {
         datasync();
         mpref = getSharedPreferences("User", MODE_PRIVATE);
         final String fname, lname, mob;
         fname = mpref.getString("FirstName", "");
         lname = mpref.getString("LastName", "");
         mob = mpref.getString("MobileNo", "");
-        if (fname.equals("") || lname.equals("") || mob.equals("")) {
+        if (Objects.requireNonNull(fname).equals("") ||
+                Objects.requireNonNull(lname).equals("") ||
+                Objects.requireNonNull(mob).equals("")) {
             basic_check1();
         }
     }
-    private void basic_check1(){
+
+    private void basic_check1() {
         datasync();
         mpref = getSharedPreferences("User", MODE_PRIVATE);
         final String fname, lname, mob;
         fname = mpref.getString("FirstName", "");
         lname = mpref.getString("LastName", "");
         mob = mpref.getString("MobileNo", "");
-        if (fname.equals("") || lname.equals("") || mob.equals("")) {
-            startActivity(new Intent(splash.this, user_regActivity.class));
+        if (Objects.requireNonNull(fname).equals("") ||
+                Objects.requireNonNull(lname).equals("") ||
+                Objects.requireNonNull(mob).equals("")) {
+            startActivity(new Intent(splash.this, activity_user_reg.class));
         }
     }
+
+    @SuppressWarnings("deprecation")
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) mcontext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
 }

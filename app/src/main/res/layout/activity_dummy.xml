@@ -6,24 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activity_main"
-    tools:openDrawer="start">
 
+    tools:ignore="HardcodedText,Autofill"
+    tools:openDrawer="start">
+    <!--tools:context=".ui_data.activity_dummy"-->
     <LinearLayout
         android:id="@+id/toolbar_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/ui_background_style3"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:ellipsize="end"
-            android:fontFamily="@font/abeezee"
-            android:maxLines="1"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/accent"
             android:elevation="4dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/abeezee"
+            android:maxLines="1"
             android:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
             android:theme="@style/ThemeOverlay.MaterialComponents.Light" />
 
@@ -32,6 +34,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Dummy"
+                android:textColor="@color/black"
+                android:textSize="34sp" />
         </FrameLayout>
     </LinearLayout>
 

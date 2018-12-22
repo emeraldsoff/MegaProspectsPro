@@ -23,4 +23,27 @@
 
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="enter1_pin">ENTER PIN</string>
+    <string name="app_security">App Security</string>
+    <string name="enter_pin">ENTER NEW PIN</string>
+
+    <string name="about_us">
+        Welcome to Mega Prospect.\n\n
+        <!--<MegaProspects><b> -->
+        https://play.google.com/store/apps/details?id=inc.emeraldsoff.prospects
+        <!--</b></MegaProspects>-->
+        \n\n
+        Mega-prospect presents an app to organizing all the data of your clients on your fingertips: smarter life in one swipe. No hassle, difficulties and worries.
+
+\nMega-prospect promises you to give a better manageable and organized way of putting important data of clients.
+\n\n
+Features
+\n>Smartest technology for organizing data.
+\n>Helps to create an effective customer relationship management.
+\n>App works in both online and offline mode.
+\n>Very little consumption on internet data.
+\n>Direct calling and messaging the client from the app.
+\n>Note adding facility is available.
+    </string>
 </resources>

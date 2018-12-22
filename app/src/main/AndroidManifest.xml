@@ -18,7 +18,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <!-- <uses-permission android:name="android.permission.SEND_SMS" /> -->
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> -->
     <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/> -->
@@ -44,16 +45,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.mobile_signin"
+            android:name=".login.activity_mobile_signin"
             android:theme="@style/AppTheme.login" />
         <activity
-            android:name=".login.loginactivity"
+            android:name=".login.activity_login"
             android:theme="@style/AppTheme.login" />
         <activity
-            android:name=".login.user_regActivity"
+            android:name=".login.activity_user_reg"
             android:theme="@style/AppTheme.login" />
-        <activity android:name=".login.signinActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <!--<activity android:name=".login.signinActivity" />-->
+        <activity android:name=".activity_main" />
+        <!--<activity android:name=".ui_data.activity_dummy"/>-->
+        <activity android:name=".billing_ui.activity_gopro" />
+        <activity android:name=".ui_data.activity_addpeople" />
+        <activity android:name=".ui_data.activity_editpeople" />
+        <activity android:name=".ui_data.activity_searchpeople" />
+        <activity android:name=".ui_data.activity_showpeopledetails" />
+        <activity android:name=".appcontrol_ui.activity_aboutus" />
+        <activity android:name=".appcontrol_ui.activity_settings" />
+        <activity android:name=".appcontrol_ui.activity_pin" />
+        <activity android:name=".appcontrol_ui.activity_entry" />
+        <activity android:name=".ui_data.fragmentHome.activity_home" />
     </application>
 
 </manifest>
