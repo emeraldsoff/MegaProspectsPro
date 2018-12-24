@@ -1,7 +1,9 @@
 package inc.emeraldsoff.megaprospectspro.ui_data;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,6 +16,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
@@ -25,10 +31,11 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import es.dmoral.toasty.Toasty;
 import inc.emeraldsoff.megaprospectspro.R;
 import inc.emeraldsoff.megaprospectspro.activity_main;
-import inc.emeraldsoff.megaprospectspro.ui_data.fragmentHome.activity_home;
+import inc.emeraldsoff.megaprospectspro.ui_data.fragment_Home.activity_home;
 
 import static android.content.ContentValues.TAG;
 
@@ -81,7 +88,7 @@ public class activity_addpeople extends activity_main {
         mpref = getSharedPreferences("User", MODE_PRIVATE);
 
 
-        Button save = findViewById(R.id.save_data);
+        final Button save = findViewById(R.id.save_data);
 //        ConstraintLayout add_cust = findViewById(R.id.add_cust);
         clientname_e = findViewById(R.id.clname);
         spous = findViewById(R.id.spouse);
@@ -251,187 +258,18 @@ public class activity_addpeople extends activity_main {
 
             }
         });
+
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    data_allocation();
-                    if (validateInputs(client_name, mobile_no)) {
-
-                        Map<String, Object> client = new HashMap<>();
-                        client.put("client_name", client_name);
-                        client.put("spouse", spouse);
-                        client.put("children", children);
-                        client.put("gender", gender);
-                        client.put("address_i", address_i);
-                        client.put("address_ii", address_ii);
-                        client.put("city", city);
-                        client.put("post_office", post_office);
-                        client.put("areapin", areapin);
-                        client.put("dist", dist);
-                        client.put("state", state);
-                        client.put("country", country);
-                        client.put("std", std);
-                        client.put("mobile_no", mobile_no);
-                        client.put("smobile_no", smobile_no);
-                        client.put("telephoneno", telephoneno);
-                        client.put("emailid", emailid);
-                        client.put("anni_dd", anni_dd);
-                        client.put("bday_dd", bday_dd);
-                        client.put("note", note);
-                        client.put("bday_code", bday_code);
-                        client.put("anni_code", anni_code);
-                        client.put("qualification", qualification);
-                        client.put("occupation", occupation);
-                        client.put("date", date);
-                        client.put("app_userid", app_userid);
-                        String collection = "prospect" + "/" + app_userid;
-//                        if (isOnline()) {
-//                            fdb.collection(collection + "/" + "client_basic_data")
-//                                    .document(mobile_no + " " + client_name + " ")
-//                                    .set(client)
-//                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                        @Override
-//                                        public void onSuccess(Void aVoid) {
-//                                            Log.d(TAG, "DocumentSnapshot successfully written!");
-////                                    Toast.makeText(mcontext, "Person Details Added To Database...", Toast.LENGTH_LONG).show();
-//                                            new StyleableToast
-//                                                    .Builder(mcontext)
-//                                                    .text("Person Details Added To DataBase Successfully..!!")
-//                                                    .iconEnd(R.drawable.ic_done_all_black_24dp)
-//                                                    .textColor(getResources().getColor(R.color.dark_red))
-//                                                    .backgroundColor(Color.GREEN)
-//                                                    .show();
-//                                            startActivity(new Intent(mcontext, addclient_activity.class));
-//                                            finish();
-//                                        }
-//                                    })
-//                                    .addOnFailureListener(new OnFailureListener() {
-//                                        @Override
-//                                        public void onFailure(@NonNull Exception e) {
-//                                            Log.w(TAG, "Error writing document", e);
-////                                    Toast.makeText(mcontext, e.getMessage(), Toast.LENGTH_LONG).show();
-//                                            new StyleableToast
-//                                                    .Builder(mcontext)
-//                                                    .text("Error writing document..!!")
-//                                                    .textColor(getResources().getColor(R.color.dark_red))
-//                                                    .backgroundColor(Color.RED)
-//                                                    .show();
-//                                        }
-//                                    });
-//                        } else {
-                        fdb.collection(collection + "/" + "client_basic_data")
-                                .document(mobile_no + " " + client_name + " ")
-                                .set(client)
-                                .isSuccessful();
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-//                                    Toast.makeText(mcontext, "Person Details Added To Database...", Toast.LENGTH_LONG).show();
-                        Toasty.success(mcontext, "Person Details Added To DataBase Successfully..!!",
-                                Toast.LENGTH_LONG, true).show();
-                        startActivity(new Intent(mcontext, activity_home.class));
-                        finish();
-//                        }
-
-                    } else {
-                        Toasty.error(mcontext, "Something went wrong...!!!",
-                                Toast.LENGTH_LONG, true).show();
-                    }
-                } catch (Exception e) {
-                    Toasty.error(mcontext, e.getMessage(),
-                            Toast.LENGTH_LONG, true).show();
-                }
+                data_save();
             }
         });
         save.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                try {
-                    data_allocation();
-                    if (validateInputs(client_name, mobile_no)) {
-
-                        Map<String, Object> client = new HashMap<>();
-                        client.put("client_name", client_name);
-                        client.put("spouse", spouse);
-                        client.put("children", children);
-                        client.put("gender", gender);
-                        client.put("address_i", address_i);
-                        client.put("address_ii", address_ii);
-                        client.put("city", city);
-                        client.put("post_office", post_office);
-                        client.put("areapin", areapin);
-                        client.put("dist", dist);
-                        client.put("state", state);
-                        client.put("country", country);
-                        client.put("std", std);
-                        client.put("mobile_no", mobile_no);
-                        client.put("smobile_no", smobile_no);
-                        client.put("telephoneno", telephoneno);
-                        client.put("emailid", emailid);
-                        client.put("anni_dd", anni_dd);
-                        client.put("bday_dd", bday_dd);
-                        client.put("note", note);
-                        client.put("bday_code", bday_code);
-                        client.put("anni_code", anni_code);
-                        client.put("qualification", qualification);
-                        client.put("occupation", occupation);
-                        client.put("date", date);
-                        client.put("app_userid", app_userid);
-                        String collection = "prospect" + "/" + app_userid;
-//                        if (isOnline()) {
-//                            fdb.collection(collection + "/" + "client_basic_data")
-//                                    .document(mobile_no + " " + client_name + " ")
-//                                    .set(client)
-//                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                        @Override
-//                                        public void onSuccess(Void aVoid) {
-//                                            Log.d(TAG, "DocumentSnapshot successfully written!");
-////                                    Toast.makeText(mcontext, "Person Details Added To Database...", Toast.LENGTH_LONG).show();
-//                                            new StyleableToast
-//                                                    .Builder(mcontext)
-//                                                    .text("Person Details Added To DataBase Successfully..!!")
-//                                                    .iconEnd(R.drawable.ic_done_all_black_24dp)
-//                                                    .textColor(getResources().getColor(R.color.dark_red))
-//                                                    .backgroundColor(Color.GREEN)
-//                                                    .show();
-//                                            startActivity(new Intent(mcontext, addclient_activity.class));
-//                                            finish();
-//                                        }
-//                                    })
-//                                    .addOnFailureListener(new OnFailureListener() {
-//                                        @Override
-//                                        public void onFailure(@NonNull Exception e) {
-//                                            Log.w(TAG, "Error writing document", e);
-////                                    Toast.makeText(mcontext, e.getMessage(), Toast.LENGTH_LONG).show();
-//                                            new StyleableToast
-//                                                    .Builder(mcontext)
-//                                                    .text("Error writing document..!!")
-//                                                    .textColor(getResources().getColor(R.color.dark_red))
-//                                                    .backgroundColor(Color.RED)
-//                                                    .show();
-//                                        }
-//                                    });
-//                        } else {
-                        fdb.collection(collection + "/" + "client_basic_data")
-                                .document(mobile_no + " " + client_name + " ")
-                                .set(client)
-                                .isSuccessful();
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-//                                    Toast.makeText(mcontext, "Person Details Added To Database...", Toast.LENGTH_LONG).show();
-                        Toasty.success(mcontext, "Person Details Added To DataBase Successfully..!!",
-                                Toast.LENGTH_LONG, true).show();
-                        startActivity(new Intent(mcontext, activity_home.class));
-                        finish();
-//                        }
-
-                    } else {
-                        Toasty.error(mcontext, "Something went wrong...!!!",
-                                Toast.LENGTH_LONG, true).show();
-                    }
-                } catch (Exception e) {
-                    Toasty.error(mcontext, e.getMessage(),
-                            Toast.LENGTH_LONG, true).show();
-                }
+                data_save();
             }
         });
     }
@@ -512,7 +350,132 @@ public class activity_addpeople extends activity_main {
         super.onBackPressed();
 //        Toast.makeText(this,"startActivity(new Intent(show_data_vivid.this, show_data.class));",Toast.LENGTH_SHORT).show();
         startActivity(new Intent(mcontext, activity_home.class));
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         finish();
+    }
+
+    public void data_save() {
+        try {
+            data_allocation();
+            if (validateInputs(client_name, mobile_no)) {
+
+                final Map<String, Object> client = new HashMap<>();
+                client.put("client_name", client_name);
+                client.put("spouse", spouse);
+                client.put("children", children);
+                client.put("gender", gender);
+                client.put("address_i", address_i);
+                client.put("address_ii", address_ii);
+                client.put("city", city);
+                client.put("post_office", post_office);
+                client.put("areapin", areapin);
+                client.put("dist", dist);
+                client.put("state", state);
+                client.put("country", country);
+                client.put("std", std);
+                client.put("mobile_no", mobile_no);
+                client.put("smobile_no", smobile_no);
+                client.put("telephoneno", telephoneno);
+                client.put("emailid", emailid);
+                client.put("anni_dd", anni_dd);
+                client.put("bday_dd", bday_dd);
+                client.put("note", note);
+                client.put("bday_code", bday_code);
+                client.put("anni_code", anni_code);
+                client.put("qualification", qualification);
+                client.put("occupation", occupation);
+                client.put("date", date);
+                client.put("app_userid", app_userid);
+                final String collection = "prospect" + "/" + app_userid;
+//                final String collection2 = "prospect" + "/" + app_userid  + "/client_basic_data";
+                final DocumentReference user = fdb.collection(collection + "/" + "client_basic_data")
+                        .document(mobile_no + " " + client_name + " ");
+                user.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(final DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            new AlertDialog.Builder(mcontext).setIcon(R.drawable.ic_warning_pink_24dp)
+                                    .setTitle("Document Conflict..!!")
+                                    .setMessage("Document is already available for this person..!! \n" +
+                                            "Do you want to delete that and save new one??")
+                                    .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+//                                            Toasty.info(mcontext,Objects.requireNonNull(documentSnapshot).toString(),
+//                                                    4,true).show();
+                                            fdb.collection(collection + "/" + "client_basic_data")
+                                                    .document(mobile_no + " " + client_name + " ")
+                                                    .set(client)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Toasty.warning(mcontext, "Old document is replaced with new document..!!",
+                                                                    4, true).show();
+                                                            Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                            startActivity(new Intent(mcontext, activity_home.class));
+                                                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                                            finish();
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Toasty.error(mcontext, "Error in writing document..!!",
+                                                                    Toast.LENGTH_LONG, true).show();
+                                                        }
+                                                    });
+                                        }
+                                    })
+//                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    Intent intent = new Intent(mcontext, activity_home.class);
+//                                    intent.addCategory(Intent.CATEGORY_HOME);
+//                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                    startActivity(intent);
+//                                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//                                    finish();
+//                                }
+//                            })
+                                    .setNegativeButton("No", null)
+                                    .show();
+
+                        } else {
+                            fdb.collection(collection + "/" + "client_basic_data")
+                                    .document(mobile_no + " " + client_name + " ")
+                                    .set(client)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toasty.success(mcontext, "Document saved successfully",
+                                                    4, true).show();
+                                            Log.d(TAG, "DocumentSnapshot successfully written!");
+                                            startActivity(new Intent(mcontext, activity_home.class));
+                                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                            finish();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toasty.error(mcontext, "Error in writing document..!!",
+                                                    Toast.LENGTH_LONG, true).show();
+                                        }
+                                    });
+                        }
+                    }
+                })
+                ;
+
+
+            } else {
+                Toasty.error(mcontext, "Something went wrong...!!!",
+                        Toast.LENGTH_LONG, true).show();
+            }
+        } catch (Exception e) {
+            Toasty.error(mcontext, e.getMessage(),
+                    Toast.LENGTH_LONG, true).show();
+        }
     }
 
 }

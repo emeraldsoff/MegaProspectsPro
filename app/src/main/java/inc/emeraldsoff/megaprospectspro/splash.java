@@ -27,7 +27,7 @@ import androidx.annotation.NonNull;
 import inc.emeraldsoff.megaprospectspro.appcontrol_ui.activity_entry;
 import inc.emeraldsoff.megaprospectspro.login.activity_login;
 import inc.emeraldsoff.megaprospectspro.login.activity_user_reg;
-import inc.emeraldsoff.megaprospectspro.ui_data.fragmentHome.activity_home;
+import inc.emeraldsoff.megaprospectspro.ui_data.fragment_Home.activity_home;
 
 //import inc.emeraldsoff.megaprospectspro.appcontrol_ui.activity_entry;
 //import inc.emeraldsoff.megaprospectspro.ui_data.activity_main;
@@ -46,75 +46,15 @@ public class splash extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth = FirebaseAuth.getInstance();
-        userid = mAuth.getUid();
-        int SPLASH_DISPLAY_LENGTH = 3000;
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mpref = getSharedPreferences("User", MODE_PRIVATE);
-                final String fname, lname, mob;
-                fname = mpref.getString("FirstName", "");
-                lname = mpref.getString("LastName", "");
-                mob = mpref.getString("MobileNo", "");
-//                Logger.d("Start splash screen");
-                if (isOnline()) {
-                    mAuthlistener = new FirebaseAuth.AuthStateListener() {
-                        @Override
-                        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                            if (user != null) {
-                                userid = mAuth.getUid();
-                                if (Objects.requireNonNull(fname).equals("") ||
-                                        Objects.requireNonNull(lname).equals("") ||
-                                        Objects.requireNonNull(mob).equals("")) {
-                                    try {
-                                        basic_check();
-                                    } catch (Exception e) {
-//                                    Crashlytics.getInstance();
-//                                    Crashlytics.log(e.getMessage());
-                                    }
-                                } else {
-                                    if (mpref.getBoolean("IF_SECURE", true)) {
-                                        if (Objects.requireNonNull(mpref.getString("PIN", "")).isEmpty() ||
-                                                Objects.requireNonNull(mpref.getString("PIN", "")).equals("")) {
-                                            startActivity(new Intent(splash.this, activity_home.class));
-                                            finish();
-                                        } else {
-                                            startActivity(new Intent(splash.this, activity_entry.class));
-                                            finish();
-                                        }
-                                    } else {
-                                        startActivity(new Intent(splash.this, activity_home.class));
-                                        finish();
-                                    }
-                                }
-                            } else {
-                                startActivity(new Intent(splash.this, activity_login.class));
-                                finish();
-                            }
-                        }
-                    };
-                    mAuth.addAuthStateListener(mAuthlistener);
-                } else {
-                    new AlertDialog.Builder(mcontext)
-                            .setTitle("Connectivity Error..!!")
-                            .setMessage("Check your net connection..!!")
-                            .setPositiveButton("Retry..!!", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+        if (isOnline()) {
 
-                                }
-                            })
-                            .setNegativeButton("Exit", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                }
-                            });
-                }
-            }
-        }, SPLASH_DISPLAY_LENGTH);
+            check_auth();
+
+        } else {
+
+            recheck_network();
+
+        }
     }
 
     @Override
@@ -227,7 +167,102 @@ public class splash extends Activity {
                 Objects.requireNonNull(lname).equals("") ||
                 Objects.requireNonNull(mob).equals("")) {
             startActivity(new Intent(splash.this, activity_user_reg.class));
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
+    }
+
+    public void check_auth() {
+        mAuth = FirebaseAuth.getInstance();
+        userid = mAuth.getUid();
+        mpref = getSharedPreferences("User", MODE_PRIVATE);
+        final String fname, lname, mob;
+        fname = mpref.getString("FirstName", "");
+        lname = mpref.getString("LastName", "");
+        mob = mpref.getString("MobileNo", "");
+        mAuthlistener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    userid = mAuth.getUid();
+                    if (Objects.requireNonNull(fname).equals("") ||
+                            Objects.requireNonNull(lname).equals("") ||
+                            Objects.requireNonNull(mob).equals("")) {
+                        try {
+                            basic_check();
+                        } catch (Exception e) {
+//                                    Crashlytics.getInstance();
+//                                    Crashlytics.log(e.getMessage());
+                        }
+                    } else {
+                        if (mpref.getBoolean("IF_SECURE", true)) {
+                            if (Objects.requireNonNull(mpref.getString("PIN", "")).isEmpty() ||
+                                    Objects.requireNonNull(mpref.getString("PIN", "")).equals("")) {
+                                startActivity(new Intent(splash.this, activity_home.class));
+                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                finish();
+                            } else {
+                                int SPLASH_DISPLAY_LENGTH = 3000;
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        startActivity(new Intent(splash.this, activity_entry.class));
+                                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                        finish();
+                                    }
+                                }, SPLASH_DISPLAY_LENGTH);
+                            }
+                        } else {
+                            int SPLASH_DISPLAY_LENGTH = 3000;
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    startActivity(new Intent(splash.this, activity_home.class));
+                                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                    finish();
+                                }
+                            }, SPLASH_DISPLAY_LENGTH);
+
+                        }
+                    }
+                } else {
+                    int SPLASH_DISPLAY_LENGTH = 3000;
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(splash.this, activity_login.class));
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                            finish();
+                        }
+                    }, SPLASH_DISPLAY_LENGTH);
+                }
+            }
+        };
+        mAuth.addAuthStateListener(mAuthlistener);
+    }
+
+    public void recheck_network() {
+        new AlertDialog.Builder(mcontext)
+                .setTitle("Connectivity Error..!!")
+                .setMessage("Check your net connection..!!")
+                .setPositiveButton("Retry..!!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (isOnline()) {
+                            check_auth();
+                        } else {
+                            startActivity(new Intent(mcontext, splash.class));
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                            finish();
+                        }
+                    }
+                })
+                .setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                }).show();
     }
 
     @SuppressWarnings("deprecation")
@@ -236,5 +271,4 @@ public class splash extends Activity {
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
-
 }

@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import inc.emeraldsoff.megaprospectspro.R;
 import inc.emeraldsoff.megaprospectspro.activity_main;
-import inc.emeraldsoff.megaprospectspro.ui_data.fragmentHome.activity_home;
+import inc.emeraldsoff.megaprospectspro.ui_data.fragment_Home.activity_home;
 
 public class activity_aboutus extends activity_main {
 

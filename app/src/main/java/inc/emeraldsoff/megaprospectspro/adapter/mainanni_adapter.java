@@ -34,7 +34,7 @@ public class mainanni_adapter extends FirestoreRecyclerAdapter<clicard_gen, main
     @Override
     public clianni_holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.mainanni_card, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_mainanni, parent, false);
         return new clianni_holder(v);
     }
 

@@ -33,7 +33,7 @@ import inc.emeraldsoff.megaprospectspro.R;
 import inc.emeraldsoff.megaprospectspro.activity_main;
 import inc.emeraldsoff.megaprospectspro.adapter.cli_adapter;
 import inc.emeraldsoff.megaprospectspro.model.clicard_gen;
-import inc.emeraldsoff.megaprospectspro.ui_data.fragmentHome.activity_home;
+import inc.emeraldsoff.megaprospectspro.ui_data.fragment_Home.activity_home;
 
 import static inc.emeraldsoff.megaprospectspro.Constants.MY_PERMISSIONS_CALL_PHONE;
 
@@ -135,7 +135,7 @@ public class activity_searchpeople extends activity_main {
                 String collection = "prospect" + "/" + app_userid + "/" + "client_basic_data";
                 final DocumentReference user = fdb.document(collection + "/" + docid);
 //                Source cache=Source.CACHE;
-                user.get(cache).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @SuppressLint("MissingPermission")
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -153,6 +153,7 @@ public class activity_searchpeople extends activity_main {
                                 } else {
                                     Intent intent = new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", call, null));
                                     startActivity(intent);
+                                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                 }
                             } else {
                                 Toasty.error(mcontext, "Something went wrong..!!",
@@ -176,6 +177,7 @@ public class activity_searchpeople extends activity_main {
                 String docid = documentSnapshot.getId();
 //                String docpath = documentSnapshot.getReference().getPath();
                 startActivity(new Intent(mcontext, activity_showpeopledetails.class).putExtra("docid", docid));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();
             }
         });
@@ -186,7 +188,7 @@ public class activity_searchpeople extends activity_main {
         mpref = getSharedPreferences("User", MODE_PRIVATE);
 
         final String app_userid = mpref.getString("userID", "");
-        Query query;
+        Query query, next;
         String collection = "prospect" + "/" + app_userid;
         final CollectionReference cliref = fdb.collection(collection + "/" + "client_basic_data");
         try {
@@ -212,7 +214,7 @@ public class activity_searchpeople extends activity_main {
 //                String app_userid = mAuth.getUid();
                 String collection = "prospect" + "/" + app_userid + "/" + "client_basic_data";
                 final DocumentReference user = fdb.document(collection + "/" + docid);
-                user.get(cache).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @SuppressLint("MissingPermission")
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -255,6 +257,7 @@ public class activity_searchpeople extends activity_main {
                 String docid = documentSnapshot.getId();
 //                String docpath = documentSnapshot.getReference().getPath();
                 startActivity(new Intent(mcontext, activity_showpeopledetails.class).putExtra("docid", docid));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();
 //                Toast.makeText(mcontext,"Position: "+position+" DOCID: "+docid,Toast.LENGTH_LONG).show();
             }
@@ -304,6 +307,7 @@ public class activity_searchpeople extends activity_main {
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(mcontext, activity_home.class));
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         finish();
     }
 }

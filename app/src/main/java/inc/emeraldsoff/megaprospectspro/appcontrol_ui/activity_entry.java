@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import es.dmoral.toasty.Toasty;
 import inc.emeraldsoff.megaprospectspro.R;
-import inc.emeraldsoff.megaprospectspro.ui_data.fragmentHome.activity_home;
+import inc.emeraldsoff.megaprospectspro.ui_data.fragment_Home.activity_home;
 
 public class activity_entry extends Activity {
     EditText pintext;

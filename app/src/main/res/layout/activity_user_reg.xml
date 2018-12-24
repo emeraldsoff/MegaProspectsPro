@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/ui_background_style1"
     tools:context=".login.activity_user_reg"
-    tools:ignore="HardcodedText">
+    tools:ignore="HardcodedText,Autofill">
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -91,6 +91,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="8dp"
                 android:hint="FIRST NAME"
+                android:theme="@style/ThemeOverlay.MaterialComponents.Light"
                 android:inputType="textPersonName"
                 android:textAlignment="center"
                 android:imeOptions="actionNext"
@@ -98,8 +99,7 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4"
-                android:autofillHints="" tools:targetApi="o" />
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <EditText
                 android:id="@+id/user_mname"
@@ -109,6 +109,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:hint="MIDDLE NAME"
+                android:theme="@style/ThemeOverlay.MaterialComponents.Light"
                 android:inputType="textPersonName"
                 android:imeOptions="actionNext"
                 android:textAlignment="center"
@@ -116,8 +117,7 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/user_fname"
-                android:importantForAutofill="no" tools:targetApi="o" />
+                app:layout_constraintTop_toBottomOf="@+id/user_fname" />
 
             <EditText
                 android:id="@+id/user_lname"
@@ -127,6 +127,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:hint="LAST NAME"
+                android:theme="@style/ThemeOverlay.MaterialComponents.Light"
                 android:inputType="textPersonName"
                 android:imeOptions="actionNext"
                 android:textAlignment="center"
@@ -134,8 +135,7 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/user_mname"
-                android:autofillHints="" tools:targetApi="o" />
+                app:layout_constraintTop_toBottomOf="@+id/user_mname" />
 
             <EditText
                 android:id="@+id/phone_no"
@@ -145,6 +145,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:hint="MOBILE NUMBER"
+                android:theme="@style/ThemeOverlay.MaterialComponents.Light"
                 android:inputType="phone"
                 android:imeOptions="actionDone"
                 android:textAlignment="center"
@@ -152,8 +153,7 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/user_lname"
-                android:autofillHints="" tools:targetApi="o" />
+                app:layout_constraintTop_toBottomOf="@+id/user_lname" />
 
             <EditText
                 android:id="@+id/email_id"
@@ -164,6 +164,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:hint="EMAIL ADDRESS"
+                android:theme="@style/ThemeOverlay.MaterialComponents.Light"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
                 android:textAlignment="center"
@@ -172,8 +173,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phone_no"
-                android:autofillHints="" tools:targetApi="o" />
+                app:layout_constraintTop_toBottomOf="@+id/phone_no" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

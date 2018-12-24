@@ -251,7 +251,73 @@ public class activity_editpeople extends activity_main {
             }
         });
 
+        get_data();
 
+        occu_grp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.unemployed:
+                        o = unemp.getText().toString();
+                        break;
+                    case R.id.student:
+                        o = stud.getText().toString();
+                        break;
+                    case R.id.home:
+                        o = hom.getText().toString();
+                        break;
+                    case R.id.self:
+                        o = sel.getText().toString();
+                        break;
+                    case R.id.govtservice:
+                        o = gov.getText().toString();
+                        break;
+                    case R.id.service:
+                        o = serv.getText().toString();
+                        break;
+                    case R.id.other:
+                        o = otr.getText().toString();
+                        break;
+                }
+            }
+        });
+
+        gender_grp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.g_male:
+                        g = male.getText().toString();
+                        break;
+                    case R.id.g_female:
+                        g = female.getText().toString();
+                        break;
+                    case R.id.g_unspecified:
+                        g = unspecified.getText().toString();
+                        break;
+//                    default:
+//                        g = male.getText().toString();
+//                        break;
+                }
+
+            }
+        });
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                update_data();
+            }
+        });
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                update_data();
+            }
+        });
+    }
+
+    private void get_data() {
         final String docid = getIntent().getStringExtra("docid");
 //        mpref = getSharedPreferences("User", MODE_PRIVATE);
         app_userid = mpref.getString("userID", "");
@@ -259,7 +325,8 @@ public class activity_editpeople extends activity_main {
 //        Toast.makeText(mcontext,"Docpath: "+docid,Toast.LENGTH_LONG).show();
         String collection = "prospect" + "/" + app_userid + "/" + "client_basic_data";
         DocumentReference user = fdb.document(collection + "/" + docid);
-        user.get(cache).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        //noinspection ConstantConditions
+        user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -394,309 +461,133 @@ public class activity_editpeople extends activity_main {
                                 Toast.LENGTH_LONG, true).show();
                     }
                 });
+    }
 
-
-        occu_grp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.unemployed:
-                        o = unemp.getText().toString();
-                        break;
-                    case R.id.student:
-                        o = stud.getText().toString();
-                        break;
-                    case R.id.home:
-                        o = hom.getText().toString();
-                        break;
-                    case R.id.self:
-                        o = sel.getText().toString();
-                        break;
-                    case R.id.govtservice:
-                        o = gov.getText().toString();
-                        break;
-                    case R.id.service:
-                        o = serv.getText().toString();
-                        break;
-                    case R.id.other:
-                        o = otr.getText().toString();
-                        break;
-                }
-            }
-        });
-
-        gender_grp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.g_male:
-                        g = male.getText().toString();
-                        break;
-                    case R.id.g_female:
-                        g = female.getText().toString();
-                        break;
-                    case R.id.g_unspecified:
-                        g = unspecified.getText().toString();
-                        break;
-//                    default:
-//                        g = male.getText().toString();
-//                        break;
-                }
-
-            }
-        });
-
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mpref = getSharedPreferences("User", MODE_PRIVATE);
-                app_userid = mpref.getString("userID", "");
-                try {
-                    data_allocation();
-                    if (validateInputs(client_name, mobile_no)) {
-                        if (isOnline() || mpref.getBoolean("IF_VALID", true)) {
-                            if (!bday_dd.isEmpty() || !bday_dd.equals("")) {
-                                bday_code = day_monFormat.parse(day_monFormat.format(fullFormat.parse(bday_dd)));
-                            } else {
-                                bday_code = null;
-                            }
-                            if (!anni_dd.isEmpty() || !anni_dd.equals("")) {
-                                anni_code = day_monFormat.parse(day_monFormat.format(fullFormat.parse(anni_dd)));
-                            } else {
-                                anni_code = null;
-                            }
-                            if (oldmobile.equals(mobile_no) && oldclientname.equals(client_name)) {
-                                String collection = "prospect" + "/" + app_userid + "/" + "client_basic_data";
-                                DocumentReference user = fdb.document(collection + "/" + docid);
+    private void update_data() {
+        final String docid = getIntent().getStringExtra("docid");
+        mpref = getSharedPreferences("User", MODE_PRIVATE);
+        app_userid = mpref.getString("userID", "");
+        try {
+            data_allocation();
+            if (validateInputs(client_name, mobile_no)) {
+                if (isOnline() || mpref.getBoolean("IF_VALID", true)) {
+                    if (!bday_dd.isEmpty() || !bday_dd.equals("")) {
+                        bday_code = day_monFormat.parse(day_monFormat.format(fullFormat.parse(bday_dd)));
+                    } else {
+                        bday_code = null;
+                    }
+                    if (!anni_dd.isEmpty() || !anni_dd.equals("")) {
+                        anni_code = day_monFormat.parse(day_monFormat.format(fullFormat.parse(anni_dd)));
+                    } else {
+                        anni_code = null;
+                    }
+                    if (oldmobile.equals(mobile_no) && oldclientname.equals(client_name)) {
+                        String collection = "prospect" + "/" + app_userid + "/" + "client_basic_data";
+                        DocumentReference user = fdb.document(collection + "/" + docid);
 //                        Toast.makeText(mcontext, user+" and "+docid, Toast.LENGTH_LONG).show();
-                                user.update("client_name", client_name);
-                                user.update("spouse", spouse);
-                                user.update("children", children);
-                                user.update("gender", gender);
-                                user.update("address_i", address_i);
-                                user.update("address_ii", address_ii);
-                                user.update("city", city);
-                                user.update("post_office", post_office);
-                                user.update("areapin", areapin);
-                                user.update("dist", dist);
-                                user.update("state", state);
-                                user.update("country", country);
-                                user.update("std", std);
-                                user.update("mobile_no", mobile_no);
-                                user.update("smobile_no", smobile_no);
-                                user.update("telephoneno", telephoneno);
-                                user.update("emailid", emailid);
-                                user.update("anni_dd", anni_dd);
+                        user.update("client_name", client_name);
+                        user.update("spouse", spouse);
+                        user.update("children", children);
+                        user.update("gender", gender);
+                        user.update("address_i", address_i);
+                        user.update("address_ii", address_ii);
+                        user.update("city", city);
+                        user.update("post_office", post_office);
+                        user.update("areapin", areapin);
+                        user.update("dist", dist);
+                        user.update("state", state);
+                        user.update("country", country);
+                        user.update("std", std);
+                        user.update("mobile_no", mobile_no);
+                        user.update("smobile_no", smobile_no);
+                        user.update("telephoneno", telephoneno);
+                        user.update("emailid", emailid);
+                        user.update("anni_dd", anni_dd);
 //                            user.update("anni_mm", anni_mm);
 //                            user.update("anni_yyyy", anni_yyyy);
-                                user.update("bday_dd", bday_dd);
+                        user.update("bday_dd", bday_dd);
 //                            user.update("bday_mm", bday_mm);
-                                user.update("note", note);
+                        user.update("note", note);
 //                            user.update("bday_yyyy", bday_yyyy);
-                                user.update("bday_code", bday_code);
-                                user.update("anni_code", anni_code);
-                                user.update("qualification", qualification);
-                                user.update("occupation", occupation);
-                                user.update("date", date)
+                        user.update("bday_code", bday_code);
+                        user.update("anni_code", anni_code);
+                        user.update("qualification", qualification);
+                        user.update("occupation", occupation);
+                        user.update("date", date)
+                                .isSuccessful();
+                        Toasty.success(mcontext, "Person Details Edited Successfully..!!",
+                                Toast.LENGTH_LONG, true).show();
+
+                        startActivity(new Intent(mcontext, activity_showpeopledetails.class).putExtra("docid", docid));
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//                                        startActivity(new Intent(mcontext, show_data.class));
+                    } else {
+                        final String collection = "prospect" + "/" + app_userid;
+                        DocumentReference user = fdb.document(collection + "/" + "client_basic_data" + "/" + docid);
+                        user.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                                Map<String, Object> client = new HashMap<>();
+                                client.put("client_name", client_name);
+                                client.put("spouse", spouse);
+                                client.put("children", children);
+                                client.put("gender", gender);
+                                client.put("address_i", address_i);
+                                client.put("address_ii", address_ii);
+                                client.put("city", city);
+                                client.put("post_office", post_office);
+                                client.put("areapin", areapin);
+                                client.put("dist", dist);
+                                client.put("state", state);
+                                client.put("country", country);
+                                client.put("std", std);
+                                client.put("mobile_no", mobile_no);
+                                client.put("smobile_no", smobile_no);
+                                client.put("telephoneno", telephoneno);
+                                client.put("emailid", emailid);
+                                client.put("anni_dd", anni_dd);
+                                client.put("bday_dd", bday_dd);
+                                client.put("note", note);
+                                client.put("bday_code", bday_code);
+                                client.put("anni_code", anni_code);
+                                client.put("qualification", qualification);
+                                client.put("occupation", occupation);
+                                client.put("date", date);
+                                client.put("app_userid", app_userid);
+//                                        String collection1 = "prospect" + "/" + app_userid;
+                                fdb.collection(collection + "/" + "client_basic_data")
+                                        .document(mobile_no + " " + client_name + " ")
+                                        .set(client)
                                         .isSuccessful();
+                                Log.d(TAG, "DocumentSnapshot successfully written!");
                                 Toasty.success(mcontext, "Person Details Edited Successfully..!!",
                                         Toast.LENGTH_LONG, true).show();
 
-                                startActivity(new Intent(mcontext, activity_showpeopledetails.class).putExtra("docid", docid));
-//                                        startActivity(new Intent(mcontext, show_data.class));
-                            } else {
-                                final String collection = "prospect" + "/" + app_userid;
-                                DocumentReference user = fdb.document(collection + "/" + "client_basic_data" + "/" + docid);
-                                user.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
+                                String docidupdate = mobile_no + " " + client_name + " ";
 
-                                        Map<String, Object> client = new HashMap<>();
-                                        client.put("client_name", client_name);
-                                        client.put("spouse", spouse);
-                                        client.put("children", children);
-                                        client.put("gender", gender);
-                                        client.put("address_i", address_i);
-                                        client.put("address_ii", address_ii);
-                                        client.put("city", city);
-                                        client.put("post_office", post_office);
-                                        client.put("areapin", areapin);
-                                        client.put("dist", dist);
-                                        client.put("state", state);
-                                        client.put("country", country);
-                                        client.put("std", std);
-                                        client.put("mobile_no", mobile_no);
-                                        client.put("smobile_no", smobile_no);
-                                        client.put("telephoneno", telephoneno);
-                                        client.put("emailid", emailid);
-                                        client.put("anni_dd", anni_dd);
-                                        client.put("bday_dd", bday_dd);
-                                        client.put("note", note);
-                                        client.put("bday_code", bday_code);
-                                        client.put("anni_code", anni_code);
-                                        client.put("qualification", qualification);
-                                        client.put("occupation", occupation);
-                                        client.put("date", date);
-                                        client.put("app_userid", app_userid);
-//                                        String collection1 = "prospect" + "/" + app_userid;
-                                        fdb.collection(collection + "/" + "client_basic_data")
-                                                .document(mobile_no + " " + client_name + " ")
-                                                .set(client)
-                                                .isSuccessful();
-                                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                                        Toasty.success(mcontext, "Person Details Edited Successfully..!!",
-                                                Toast.LENGTH_LONG, true).show();
-
-                                        String docidupdate = mobile_no + " " + client_name + " ";
-
-                                        startActivity(new Intent(mcontext, activity_showpeopledetails.class).putExtra("docid", docidupdate));
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toasty.error(mcontext, "Something went wrong...!!!",
-                                                Toast.LENGTH_LONG, true).show();
-                                    }
-                                });
+                                startActivity(new Intent(mcontext, activity_showpeopledetails.class).putExtra("docid", docidupdate));
+                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             }
-                        } else {
-                            Toasty.error(mcontext, "Turn on wifi or mobile data to edit..!!",
-                                    4, true).show();
-                        }
-                    } else {
-                        Toasty.error(mcontext, "Something went wrong...!!!",
-                                Toast.LENGTH_LONG, true).show();
-                    }
-                } catch (Exception e) {
-                    Toasty.error(mcontext, e.getMessage(), Toast.LENGTH_LONG, true).show();
-                }
-            }
-        });
-        update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                startActivity(new Intent(activity_showpeopledetails.this, editdataActivity.class).putExtra("docid", docid));
-//                mAuth = FirebaseAuth.getInstance();
-                mpref = getSharedPreferences("User", MODE_PRIVATE);
-                app_userid = mpref.getString("userID", "");
-                try {
-                    data_allocation();
-                    if (validateInputs(client_name, mobile_no)) {
-                        if (isOnline() || mpref.getBoolean("IF_VALID", true)) {
-                            if (!bday_dd.isEmpty() || !bday_dd.equals("")) {
-                                bday_code = day_monFormat.parse(day_monFormat.format(fullFormat.parse(bday_dd)));
-                            }
-                            if (!anni_dd.isEmpty() || !anni_dd.equals("")) {
-                                anni_code = day_monFormat.parse(day_monFormat.format(fullFormat.parse(anni_dd)));
-                            }
-                            if (oldmobile.equals(mobile_no) && oldclientname.equals(client_name)) {
-                                String collection = "prospect" + "/" + app_userid + "/" + "client_basic_data";
-                                DocumentReference user = fdb.document(collection + "/" + docid);
-//                        Toast.makeText(mcontext, user+" and "+docid, Toast.LENGTH_LONG).show();
-                                user.update("client_name", client_name);
-                                user.update("spouse", spouse);
-                                user.update("children", children);
-                                user.update("gender", gender);
-                                user.update("address_i", address_i);
-                                user.update("address_ii", address_ii);
-                                user.update("city", city);
-                                user.update("post_office", post_office);
-                                user.update("areapin", areapin);
-                                user.update("dist", dist);
-                                user.update("state", state);
-                                user.update("country", country);
-                                user.update("std", std);
-                                user.update("mobile_no", mobile_no);
-                                user.update("smobile_no", smobile_no);
-                                user.update("telephoneno", telephoneno);
-                                user.update("emailid", emailid);
-                                user.update("anni_dd", anni_dd);
-//                            user.update("anni_mm", anni_mm);
-//                            user.update("anni_yyyy", anni_yyyy);
-                                user.update("bday_dd", bday_dd);
-//                            user.update("bday_mm", bday_mm);
-                                user.update("note", note);
-//                            user.update("bday_yyyy", bday_yyyy);
-                                user.update("bday_code", bday_code);
-                                user.update("anni_code", anni_code);
-                                user.update("qualification", qualification);
-                                user.update("occupation", occupation);
-                                user.update("date", date)
-                                        .isSuccessful();
-                                Toasty.success(mcontext, "Person Details Edited Successfully..!!",
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toasty.error(mcontext, "Something went wrong...!!!",
                                         Toast.LENGTH_LONG, true).show();
-
-                                startActivity(new Intent(mcontext, activity_showpeopledetails.class).putExtra("docid", docid));
-//                                        startActivity(new Intent(mcontext, show_data.class));
-                            } else {
-                                final String collection = "prospect" + "/" + app_userid;
-                                DocumentReference user = fdb.document(collection + "/" + "client_basic_data" + "/" + docid);
-                                user.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Map<String, Object> client = new HashMap<>();
-                                        client.put("client_name", client_name);
-                                        client.put("spouse", spouse);
-                                        client.put("children", children);
-                                        client.put("gender", gender);
-                                        client.put("address_i", address_i);
-                                        client.put("address_ii", address_ii);
-                                        client.put("city", city);
-                                        client.put("post_office", post_office);
-                                        client.put("areapin", areapin);
-                                        client.put("dist", dist);
-                                        client.put("state", state);
-                                        client.put("country", country);
-                                        client.put("std", std);
-                                        client.put("mobile_no", mobile_no);
-                                        client.put("smobile_no", smobile_no);
-                                        client.put("telephoneno", telephoneno);
-                                        client.put("emailid", emailid);
-                                        client.put("anni_dd", anni_dd);
-                                        client.put("bday_dd", bday_dd);
-                                        client.put("note", note);
-                                        client.put("bday_code", bday_code);
-                                        client.put("anni_code", anni_code);
-                                        client.put("qualification", qualification);
-                                        client.put("occupation", occupation);
-                                        client.put("date", date);
-                                        client.put("app_userid", app_userid);
-//                                        String collection1 = "prospect" + "/" + app_userid;
-                                        fdb.collection(collection + "/" + "client_basic_data")
-                                                .document(mobile_no + " " + client_name + " ")
-                                                .set(client)
-                                                .isSuccessful();
-                                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                                        Toasty.success(mcontext, "Person Details Edited Successfully..!!",
-                                                Toast.LENGTH_LONG, true).show();
-
-                                        String docidupdate = mobile_no + " " + client_name + " ";
-
-                                        startActivity(new Intent(mcontext, activity_showpeopledetails.class)
-                                                .putExtra("docid", docidupdate));
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toasty.error(mcontext, "Something went wrong..!!",
-                                                Toast.LENGTH_LONG, true).show();
-                                    }
-                                });
                             }
-                        } else {
-                            Toasty.error(mcontext, "Turn on wifi or mobile data to edit..!!",
-                                    4, true).show();
-                        }
-                    } else {
-                        Toasty.error(mcontext, "Something went wrong..!!",
-                                Toast.LENGTH_LONG, true).show();
+                        });
                     }
-                } catch (Exception e) {
-                    Toasty.error(mcontext, "Something went wrong..!!",
-                            Toast.LENGTH_LONG, true).show();
+                } else {
+                    Toasty.error(mcontext, "Turn on wifi or mobile data to edit..!!",
+                            4, true).show();
                 }
+            } else {
+                Toasty.error(mcontext, "Something went wrong...!!!",
+                        Toast.LENGTH_LONG, true).show();
             }
-        });
+        } catch (Exception e) {
+            Toasty.error(mcontext, e.getMessage(), Toast.LENGTH_LONG, true).show();
+        }
     }
 
     private void annidate() {
@@ -754,6 +645,7 @@ public class activity_editpeople extends activity_main {
         super.onBackPressed();
         String docid = getIntent().getStringExtra("docid");
         startActivity(new Intent(mcontext, activity_showpeopledetails.class).putExtra("docid", docid));
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         finish();
     }
 

@@ -32,6 +32,7 @@ public class activity_showpeopledetails extends activity_main {
     FirebaseFirestore fdb = FirebaseFirestore.getInstance();
     private Context mcontext;
     private SharedPreferences mpref;
+
     private TextView clientname_e, spous, child;
     private TextView adri_road_house, adrii_vlg_area, adriii_city, adriv_po, adrv_pin, adrvi_dist, adrvii_state, adrviii_country;
     private TextView std_e, mob, smob, tele, email, not;
@@ -89,7 +90,7 @@ public class activity_showpeopledetails extends activity_main {
         final String app_userid = mpref.getString("userID", "");
         String collection = "prospect" + "/" + app_userid + "/" + "client_basic_data";
         DocumentReference user = fdb.document(collection + "/" + docid);
-        user.get(cache).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -195,6 +196,7 @@ public class activity_showpeopledetails extends activity_main {
 
                 if (isOnline() || mpref.getBoolean("IF_VALID", true)) {
                     startActivity(new Intent(mcontext, activity_editpeople.class).putExtra("docid", docid));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     finish();
                 } else {
                     //TODO comment 1st line
@@ -225,6 +227,7 @@ public class activity_showpeopledetails extends activity_main {
                                             Toasty.success(mcontext, "Person Details Deleted From DataBase Successfully..!!",
                                                     Toast.LENGTH_LONG, true).show();
                                             startActivity(new Intent(mcontext, activity_searchpeople.class));
+                                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                             finish();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
@@ -235,7 +238,7 @@ public class activity_showpeopledetails extends activity_main {
                                         }
                                     });
                                 }
-                            }).setNegativeButton("no", null).show();
+                            }).setNegativeButton("No", null).show();
                 } else {
                     //TODO comment 1st line
                     Toasty.error(mcontext, "Turn on wifi or mobile data to edit..!!",
@@ -250,7 +253,7 @@ public class activity_showpeopledetails extends activity_main {
         super.onBackPressed();
 //        Toast.makeText(this,"startActivity(new Intent(mcontext, activity_searchpeople.class));",Toast.LENGTH_SHORT).show();
         startActivity(new Intent(mcontext, activity_searchpeople.class));
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         finish();
     }
-
 }

@@ -27,7 +27,8 @@ public class cli_adapter extends FirestoreRecyclerAdapter<clicard_gen, cli_adapt
 
     @Override
     protected void onBindViewHolder(@NonNull cli_holder holder, int position, @NonNull final clicard_gen model) {
-
+        int i = position + 1;
+        holder.cli_id.setText(String.valueOf(i));
         holder.cli_name.setText(model.getClient_name());
         holder.cli_phno.setText(model.getMobile_no());
         if (model.getNote() == null || model.getNote().isEmpty() || model.getNote().equals("")) {
@@ -43,7 +44,7 @@ public class cli_adapter extends FirestoreRecyclerAdapter<clicard_gen, cli_adapt
     @Override
     public cli_holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cid_card, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_cid, parent, false);
         return new cli_holder(view);
     }
 
@@ -74,12 +75,14 @@ public class cli_adapter extends FirestoreRecyclerAdapter<clicard_gen, cli_adapt
         TextView cli_phno;
         //        TextView cli_dob;
         TextView cli_note;
+        TextView cli_id;
 
         cli_holder(View itemView) {
             super(itemView);
             cli_name = itemView.findViewById(R.id.cli_name);
             cli_phno = itemView.findViewById(R.id.cli_phno);
             cli_note = itemView.findViewById(R.id.cli_note);
+            cli_id = itemView.findViewById(R.id.id_no);
 //            cli_dob = itemView.findViewById(R.id.cli_dob);
 //            cli_birthday = itemView.findViewById(R.id.cli_birthday);
 

@@ -33,7 +33,8 @@ import inc.emeraldsoff.megaprospectspro.appcontrol_ui.activity_settings;
 import inc.emeraldsoff.megaprospectspro.billing_ui.activity_gopro;
 import inc.emeraldsoff.megaprospectspro.ui_data.activity_addpeople;
 import inc.emeraldsoff.megaprospectspro.ui_data.activity_searchpeople;
-import inc.emeraldsoff.megaprospectspro.ui_data.fragmentHome.activity_home;
+import inc.emeraldsoff.megaprospectspro.ui_data.diary.activity_diary;
+import inc.emeraldsoff.megaprospectspro.ui_data.fragment_Home.activity_home;
 
 //import static com.crashlytics.android.Crashlytics.TAG;
 
@@ -93,13 +94,14 @@ public class activity_main extends AppCompatActivity {
         getactivityname();
         userdatafetch();
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Harlow.ttf");
-
+        navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
                         startActivity(new Intent(mcontext, activity_home.class));
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 //                getSupportFragmentManager()
 //                        .beginTransaction()
 //                        .setCustomAnimations(R.anim.fui_slide_in_right, R.anim.fui_slide_out_left)
@@ -110,18 +112,27 @@ public class activity_main extends AppCompatActivity {
                         break;
                     case R.id.addpeople:
                         startActivity(new Intent(mcontext, activity_addpeople.class));
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                     case R.id.searchpeople:
                         startActivity(new Intent(mcontext, activity_searchpeople.class));
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                     case R.id.settings:
                         startActivity(new Intent(mcontext, activity_settings.class));
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                     case R.id.aboutus:
                         startActivity(new Intent(mcontext, activity_aboutus.class));
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                     case R.id.gopro:
                         startActivity(new Intent(mcontext, activity_gopro.class));
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        break;
+                    case R.id.diary_content:
+                        startActivity(new Intent(mcontext, activity_diary.class));
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                     case R.id.share:
                         Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -275,6 +286,13 @@ public class activity_main extends AppCompatActivity {
                 navigationView.setCheckedItem(R.id.gopro);
                 toolbar.setTitle(Objects.requireNonNull(navigationView.getCheckedItem()).getTitle());
                 break;
+            case "activity_diary":
+                navigationView.setCheckedItem(R.id.diary_content);
+                toolbar.setTitle(Objects.requireNonNull(navigationView.getCheckedItem()).getTitle());
+                break;
+            case "activity_add_diary_content":
+                toolbar.setTitle("New Diary Document");
+                break;
         }
 //        else if(activityname.equals("activity_editpeople"))
 //        {
@@ -323,6 +341,7 @@ public class activity_main extends AppCompatActivity {
             email.setText(mpref.getString("EmailId", ""));
         } else {
             email.setVisibility(View.GONE);
+
         }
 //        Date finalexp;
 //        String exp_date = "";

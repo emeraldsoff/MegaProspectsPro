@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="deban">
     <words>
+      <w>abeezee</w>
       <w>aboutus</w>
       <w>activityname</w>
       <w>addclient</w>
@@ -37,6 +38,9 @@
       <w>clientname</w>
       <w>cliref</w>
       <w>clname</w>
+      <w>coloraccent</w>
+      <w>colorprimary</w>
+      <w>colorprimarydark</w>
       <w>currentdate</w>
       <w>datcal</w>
       <w>dayformat</w>
@@ -59,6 +63,7 @@
       <w>gbtn</w>
       <w>getactivityname</w>
       <w>gnder</w>
+      <w>googlebutton</w>
       <w>gopro</w>
       <w>govtservice</w>
       <w>ifval</w>
@@ -72,7 +77,10 @@
       <w>nowdate</w>
       <w>occu</w>
       <w>occupatn</w>
+      <w>oldclientname</w>
+      <w>oldmobile</w>
       <w>permissioncheck</w>
+      <w>primarydark</w>
       <w>primarylight</w>
       <w>quali</w>
       <w>qualifi</w>
@@ -80,6 +88,7 @@
       <w>reqd</w>
       <w>searchaction</w>
       <w>searchpeople</w>
+      <w>setupannirecycle</w>
       <w>setupbdayrecycle</w>
       <w>setuprecycle</w>
       <w>sharedpref</w>

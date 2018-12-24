@@ -1,4 +1,4 @@
-package inc.emeraldsoff.megaprospectspro.ui_data.fragmentHome;
+package inc.emeraldsoff.megaprospectspro.ui_data.fragment_Home;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -82,8 +82,8 @@ public class activity_home extends activity_main {
 
     private void setupViewPager(ViewPager viewPager) {
         activity_home.Adapter adapter = new activity_home.Adapter(getSupportFragmentManager());
-        adapter.addFragment(new fragment_birthdays(), "Birthdays");
-        adapter.addFragment(new fragment_anniversaries(), "Anniversaries");
+        adapter.addFragment(new fragment_today_events(), "TODAY");
+        adapter.addFragment(new fragment_upcoming_events(), "UPCOMING");
 //        adapter.addFragment(new MonthFixturesFragment(), "Month");
 //        adapter.addFragment(new AllFixturesFragment(), "Month");
 //        adapter.addFragment(new MyTeamsFixturesFragment(), "My Teams");
@@ -103,7 +103,7 @@ public class activity_home extends activity_main {
                         startActivity(intent);
                         finish();
                     }
-                }).setNegativeButton("no", null).show();
+                }).setNegativeButton("No", null).show();
     }
 
     private void permissioncheck() {

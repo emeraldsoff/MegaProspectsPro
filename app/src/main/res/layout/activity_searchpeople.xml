@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:background="#FFFF"
+            android:background="@drawable/ui_scroll_constraint_style1"
             android:inputType="textPersonName"
             android:searchHintIcon="@drawable/round_search_24"
             android:theme="@style/ThemeOverlay.MaterialComponents.Light" />
@@ -54,21 +54,27 @@
             android:id="@+id/id_recycle_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            android:paddingBottom="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ui_scroll_constraint_style1"
             android:theme="@style/Widget.MaterialComponents.CardView"
             android:visibility="visible" />
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
+        style="@style/Base.Widget.MaterialComponents.PopupMenu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:animateLayoutChanges="true"
+        android:background="@color/white"
+        android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.MaterialComponents.Light"
         app:headerLayout="@layout/nav_header"
+        app:itemTextAppearance="@style/Base.TextAppearance.Widget.AppCompat.ExpandedMenu.Item"
+        app:itemTextColor="@color/black"
         app:menu="@menu/drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

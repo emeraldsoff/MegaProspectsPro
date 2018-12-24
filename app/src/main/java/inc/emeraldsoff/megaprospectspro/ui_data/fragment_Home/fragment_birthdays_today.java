@@ -1,4 +1,4 @@
-package inc.emeraldsoff.megaprospectspro.ui_data.fragmentHome;
+package inc.emeraldsoff.megaprospectspro.ui_data.fragment_Home;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -26,7 +26,6 @@ import com.google.firebase.firestore.Source;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -40,13 +39,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import es.dmoral.toasty.Toasty;
 import inc.emeraldsoff.megaprospectspro.R;
-import inc.emeraldsoff.megaprospectspro.adapter.mainanni_adapter;
+import inc.emeraldsoff.megaprospectspro.adapter.mainbday_adapter;
 import inc.emeraldsoff.megaprospectspro.model.clicard_gen;
 
 import static android.content.Context.MODE_PRIVATE;
 import static inc.emeraldsoff.megaprospectspro.Constants.MY_PERMISSIONS_CALL_PHONE;
 
-public class fragment_anniversaries extends Fragment {
+//import com.crashlytics.android.Crashlytics;
+
+public class fragment_birthdays_today extends Fragment {
 
     private final int day = 1000 * 60 * 60 * 24;
     private Context mcontext;
@@ -57,7 +58,7 @@ public class fragment_anniversaries extends Fragment {
 //    Calendar calendar = Calendar.getInstance();
     private Date now = new Date();
     //    SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.US);
-    private Date futuredate = null;
+//    private Date futuredate = null;
     private Date currentdate = null;
     //    SimpleDateFormat fullFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 //    SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.US);
@@ -69,27 +70,46 @@ public class fragment_anniversaries extends Fragment {
 //    Date now = new Date();
 //    String dateString = formatter.format(now);
 
-    private RecyclerView anni_list;
-    private mainanni_adapter anni_adapter;
+    private RecyclerView bday_list;
+    private mainbday_adapter bday_adapter;
 
     @Override
     public void onStart() {
         super.onStart();
-        access_anni_data();
+        access_bday_data();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        access_bday_data_close();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        access_bday_data();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        access_bday_data_close();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_home_anniversaries, container, false);
+        View v = inflater.inflate(R.layout.fragment_home_events_viewer, container, false);
+
 
         mcontext = getActivity();
         mpref = Objects.requireNonNull(mcontext)
                 .getSharedPreferences("User", MODE_PRIVATE);
-        anni_list = v.findViewById(R.id.id_recycle_view);
+        bday_list = v.findViewById(R.id.id_recycle_view);
 
         try {
-            setupannirecycle();
+            setupbdayrecycle();
         } catch (Exception e) {
 //            Crashlytics.getInstance();
 //            Crashlytics.log(e.getMessage());
@@ -102,9 +122,9 @@ public class fragment_anniversaries extends Fragment {
         return v;
     }
 
-    private void access_anni_data() {
+    private void access_bday_data() {
         try {
-            anni_adapter.startListening();
+            bday_adapter.startListening();
         } catch (Exception e) {
             e.printStackTrace();
             Toasty.error(mcontext, "Something went wrong..!!",
@@ -112,16 +132,26 @@ public class fragment_anniversaries extends Fragment {
         }
     }
 
-    private void setupannirecycle() {
+    private void access_bday_data_close() {
+        try {
+            bday_adapter.stopListening();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toasty.error(mcontext, "Something went wrong..!!",
+                    Toast.LENGTH_LONG, true).show();
+        }
+    }
+
+    private void setupbdayrecycle() {
 //        mAuth = FirebaseAuth.getInstance();
         mpref = Objects.requireNonNull(mcontext)
                 .getSharedPreferences("User", MODE_PRIVATE);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(now);
-        calendar.add(Calendar.DAY_OF_YEAR, +7);
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(now);
+//        calendar.add(Calendar.DAY_OF_YEAR, +7);
 //        String date;
         try {
-            futuredate = day_monFormat.parse(day_monFormat.format(calendar.getTime()));
+//            futuredate = day_monFormat.parse(day_monFormat.format(calendar.getTime()));
             currentdate = day_monFormat.parse(day_monFormat.format(now));
         } catch (ParseException e) {
             e.printStackTrace();
@@ -138,28 +168,29 @@ public class fragment_anniversaries extends Fragment {
 
             query = cliref
 
-                    .orderBy("anni_code", Query.Direction.ASCENDING)
-                    .whereGreaterThanOrEqualTo("anni_code", currentdate)
-                    .whereLessThanOrEqualTo("anni_code", futuredate)
+                    .orderBy("bday_code", Query.Direction.ASCENDING)
+                    .whereEqualTo("bday_code", currentdate)
+//                    .whereGreaterThanOrEqualTo("bday_code", currentdate)
+//                    .whereLessThanOrEqualTo("bday_code", futuredate)
             ;
 
             FirestoreRecyclerOptions<clicard_gen> options = new FirestoreRecyclerOptions.Builder<clicard_gen>()
                     .setQuery(query, clicard_gen.class)
                     .build();
-            anni_adapter = new mainanni_adapter(options);
-            anni_list.setHasFixedSize(true);
-            anni_list.setLayoutManager(new LinearLayoutManager(mcontext));
-            anni_list.setAdapter(anni_adapter);
+            bday_adapter = new mainbday_adapter(options);
+            bday_list.setHasFixedSize(true);
+            bday_list.setLayoutManager(new LinearLayoutManager(mcontext));
+            bday_list.setAdapter(bday_adapter);
 
 
-//            mainanni_adapter.startListening();
+//            mainbday_adapter.startListening();
         } catch (Exception e) {
 //                Crashlytics.getInstance();
 //                Crashlytics.log(e.getMessage());
             e.printStackTrace();
             Toast.makeText(mcontext, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-        anni_adapter.setOnItemClickListener(new mainanni_adapter.onItemClickListener() {
+        bday_adapter.setOnItemClickListener(new mainbday_adapter.onItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 String docid = documentSnapshot.getId();
@@ -202,7 +233,7 @@ public class fragment_anniversaries extends Fragment {
                         });
             }
         });
-        anni_adapter.setOnLongItemClickListener(new mainanni_adapter.onLongItemClickListener() {
+        bday_adapter.setOnLongItemClickListener(new mainbday_adapter.onLongItemClickListener() {
             @Override
             public void onLongItemClick(DocumentSnapshot documentSnapshot, final int position) {
                 String docid = documentSnapshot.getId();
@@ -296,4 +327,5 @@ public class fragment_anniversaries extends Fragment {
             }
         });
     }
+
 }

@@ -34,7 +34,7 @@ public class mainbday_adapter extends FirestoreRecyclerAdapter<clicard_gen, main
     @Override
     public clibday_holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.mainbday_card, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_mainbday, parent, false);
         return new clibday_holder(v);
     }
 
