@@ -33,7 +33,7 @@ import inc.emeraldsoff.megaprospectspro.appcontrol_ui.activity_settings;
 import inc.emeraldsoff.megaprospectspro.billing_ui.activity_gopro;
 import inc.emeraldsoff.megaprospectspro.ui_data.activity_addpeople;
 import inc.emeraldsoff.megaprospectspro.ui_data.activity_searchpeople;
-import inc.emeraldsoff.megaprospectspro.ui_data.diary.activity_diary;
+import inc.emeraldsoff.megaprospectspro.ui_data.diary.activity_diary_content;
 import inc.emeraldsoff.megaprospectspro.ui_data.fragment_Home.activity_home;
 
 //import static com.crashlytics.android.Crashlytics.TAG;
@@ -131,7 +131,7 @@ public class activity_main extends AppCompatActivity {
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                     case R.id.diary_content:
-                        startActivity(new Intent(mcontext, activity_diary.class));
+                        startActivity(new Intent(mcontext, activity_diary_content.class));
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                     case R.id.share:
@@ -286,7 +286,7 @@ public class activity_main extends AppCompatActivity {
                 navigationView.setCheckedItem(R.id.gopro);
                 toolbar.setTitle(Objects.requireNonNull(navigationView.getCheckedItem()).getTitle());
                 break;
-            case "activity_diary":
+            case "activity_diary_content":
                 navigationView.setCheckedItem(R.id.diary_content);
                 toolbar.setTitle(Objects.requireNonNull(navigationView.getCheckedItem()).getTitle());
                 break;

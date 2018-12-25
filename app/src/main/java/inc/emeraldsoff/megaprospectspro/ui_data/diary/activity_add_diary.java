@@ -27,15 +27,15 @@ import es.dmoral.toasty.Toasty;
 import inc.emeraldsoff.megaprospectspro.R;
 import inc.emeraldsoff.megaprospectspro.activity_main;
 
-public class activity_add_diary_content extends activity_main {
+public class activity_add_diary extends activity_main {
     String diary_page, app_userid, date;
     private Context mcontext;
     private Source cache = Source.CACHE;
     private SharedPreferences mpref;
     private FirebaseFirestore fdb = FirebaseFirestore.getInstance();
     private SimpleDateFormat fullFormat_time = new SimpleDateFormat("YYYY-MMMM-dd', 'EEEE', 'hh:mm:ss a", Locale.US);
-    private SimpleDateFormat format_doc = new SimpleDateFormat("YYYY-MMMM-dd','EEEE", Locale.US);
-    private SimpleDateFormat format_folder = new SimpleDateFormat("YYYY-MMMM-dd-EEEE", Locale.US);
+    private SimpleDateFormat folderdoc = new SimpleDateFormat("YYYY-MMMM-dd', 'EEEE", Locale.US);
+    private SimpleDateFormat foldername = new SimpleDateFormat("YYYY-MMMM-dd-EEEE", Locale.US);
     private SimpleDateFormat fullFormat_time_doc = new SimpleDateFormat("YYYY-MMMM-dd-EEEE-hh-mm-ss-a", Locale.US);
     private TextInputEditText note;
     private TextView date_view;
@@ -58,8 +58,8 @@ public class activity_add_diary_content extends activity_main {
         note = findViewById(R.id.diary_text);
         save = findViewById(R.id.save_note);
         final Date timestamp = Calendar.getInstance().getTime();
-        final String folder = format_folder.format(timestamp);
-        final String day = format_doc.format(timestamp);
+        final String folder_name = foldername.format(timestamp);
+        final String folder_doc = folderdoc.format(timestamp);
         date_view.setText(fullFormat_time.format(timestamp));
         app_userid = mpref.getString("userID", "");
         final String collection = "prospect" + "/" + app_userid;
@@ -72,30 +72,52 @@ public class activity_add_diary_content extends activity_main {
             @Override
             public void onClick(View v) {
                 diary_page = note.getText().toString().trim();
-                Map<String, Object> client = new HashMap<>();
-                client.put("diary_page", diary_page);
-                client.put("timestamp", timestamp);
+                Map<String, Object> folder = new HashMap<>();
+                folder.put("folder_doc", folder_doc);
+                folder.put("timestamp", timestamp);
                 if (validation())
                     fdb.collection(collection + "/" + "personal_diary")
-                            .document(fullFormat_time_doc.format(timestamp))
-                            .set(client)
+                            .document(folder_name)
+                            .set(folder)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toasty.success(mcontext, "Diary Page saved successfully..!!",
-                                            4, true).show();
-                                    startActivity(new Intent(mcontext, activity_diary.class));
-                                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-                                    finish();
+                                    Map<String, Object> client = new HashMap<>();
+                                    client.put("data", diary_page);
+                                    client.put("timestmp", timestamp);
+                                    client.put("timestmp_mod", fullFormat_time.format(timestamp));
+                                    fdb.collection(collection + "/" + "personal_diary" + "/" + folder_name + "/" + "pages")
+                                            .document(fullFormat_time_doc.format(timestamp))
+                                            .set(client)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Toasty.success(mcontext, "Diary Page saved successfully..!!",
+                                                            4, true).show();
+                                                    startActivity(new Intent(mcontext, activity_diary_content.class));
+                                                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                                                    finish();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toasty.error(mcontext, "Failed to save Diary Page..!! Something went wrong.",
+                                                            4, true).show();
+                                                    startActivity(new Intent(mcontext, activity_diary_content.class));
+                                                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                                                    finish();
+                                                }
+                                            });
 
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toasty.error(mcontext, "Failed to save Diary Page..!! Something went wrong.",
+                                    Toasty.error(mcontext, "Failed to create folder..!! Something went wrong.",
                                             4, true).show();
-                                    startActivity(new Intent(mcontext, activity_diary.class));
+                                    startActivity(new Intent(mcontext, activity_diary_content.class));
                                     overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                                     finish();
                                 }
@@ -109,7 +131,7 @@ public class activity_add_diary_content extends activity_main {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(mcontext, activity_diary.class));
+        startActivity(new Intent(mcontext, activity_diary_content.class));
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         finish();
     }
@@ -140,7 +162,7 @@ public class activity_add_diary_content extends activity_main {
 //                            public void onSuccess(Void aVoid) {
 //                                Toasty.success(mcontext, "Diary Page saved successfully..!!",
 //                                        4, true).show();
-//                                startActivity(new Intent(mcontext, activity_diary.class));
+//                                startActivity(new Intent(mcontext, activity_diary_content.class));
 //                                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 //                                finish();
 //
@@ -151,7 +173,7 @@ public class activity_add_diary_content extends activity_main {
 //                            public void onFailure(@NonNull Exception e) {
 //                                Toasty.error(mcontext, "Failed to save Diary Page..!! Something went wrong.",
 //                                        4, true).show();
-//                                startActivity(new Intent(mcontext, activity_diary.class));
+//                                startActivity(new Intent(mcontext, activity_diary_content.class));
 //                                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 //                                finish();
 //                            }

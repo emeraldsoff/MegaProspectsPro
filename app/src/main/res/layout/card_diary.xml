@@ -64,7 +64,7 @@
                 android:text="Date And Time"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -79,13 +79,13 @@
                 android:elevation="8dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/abeezee"
-                android:maxLines="3"
                 android:text="Contents Contents Contents Contents Contents Contents Contents "
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="normal" />
+            <!--android:maxLines="3"-->
 
         </LinearLayout>
 

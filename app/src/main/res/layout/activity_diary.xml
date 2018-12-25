@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui_data.diary.activity_diary"
+    tools:context=".ui_data.diary.activity_diary_content"
     tools:ignore="HardcodedText,Autofill"
     tools:openDrawer="start">
     <!--tools:openDrawer="start"-->

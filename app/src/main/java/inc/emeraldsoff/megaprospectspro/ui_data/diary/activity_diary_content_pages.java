@@ -21,11 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import inc.emeraldsoff.megaprospectspro.R;
 import inc.emeraldsoff.megaprospectspro.activity_main;
 import inc.emeraldsoff.megaprospectspro.adapter.diary_adapter;
-import inc.emeraldsoff.megaprospectspro.model.diarycard_gen;
-import inc.emeraldsoff.megaprospectspro.ui_data.activity_showpeopledetails;
-import inc.emeraldsoff.megaprospectspro.ui_data.fragment_Home.activity_home;
+import inc.emeraldsoff.megaprospectspro.model.diarycard_page_gen;
 
-public class activity_diary extends activity_main {
+public class activity_diary_content_pages extends activity_main {
     SharedPreferences mpref;
     RecyclerView id_recycleview;
     //    ScrollView scrollview;
@@ -33,6 +31,7 @@ public class activity_diary extends activity_main {
     Source cache = Source.CACHE;
     FloatingActionButton fab;
     int fab_ht;
+    androidx.appcompat.widget.Toolbar toolbar;
     private Context mcontext;
     private diary_adapter adapter;
 
@@ -55,11 +54,11 @@ public class activity_diary extends activity_main {
         adapter.startListening();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        adapter.stopListening();
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        adapter.stopListening();
+//    }
 
     @Override
     protected void onDestroy() {
@@ -81,17 +80,19 @@ public class activity_diary extends activity_main {
     }
 
     private void setDiary() {
+        toolbar = findViewById(R.id.toolbar);
         mpref = getSharedPreferences("User", MODE_PRIVATE);
-
+        final String folder_name = getIntent().getStringExtra("docid");
         final String app_userid = mpref.getString("userID", "");
-        Query query, next;
+        Query query;
         String collection = "prospect" + "/" + app_userid;
-        final CollectionReference cliref = fdb.collection(collection + "/" + "personal_diary");
+        final CollectionReference cliref = fdb.collection(collection + "/" + "personal_diary" + "/" +
+                folder_name + "/" + "pages");
         try {
-            query = cliref.orderBy("timestamp", Query.Direction.DESCENDING)
+            query = cliref.orderBy("timestmp", Query.Direction.DESCENDING)
             ;
-            FirestoreRecyclerOptions<diarycard_gen> options = new FirestoreRecyclerOptions.Builder<diarycard_gen>()
-                    .setQuery(query, diarycard_gen.class)
+            FirestoreRecyclerOptions<diarycard_page_gen> options = new FirestoreRecyclerOptions.Builder<diarycard_page_gen>()
+                    .setQuery(query, diarycard_page_gen.class)
                     .build();
             adapter = new diary_adapter(options);
             id_recycleview = findViewById(R.id.id_recycle_view);
@@ -105,9 +106,16 @@ public class activity_diary extends activity_main {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 String docid = documentSnapshot.getId();
+//                Toasty.info(mcontext, folder_name+"/"+docid+":::::::::::::"+documentSnapshot,
+//                        Toast.LENGTH_LONG, true).show();
 //                mAuth = FirebaseAuth.getInstance();
 //                String app_userid = mAuth.getUid();
-                startActivity(new Intent(mcontext, activity_showpeopledetails.class).putExtra("docid", docid));
+                String full_path = "prospect" + "/" + app_userid + "/" + "personal_dairy" + "/" + folder_name + "/" + "pages" + "/" + docid;
+                startActivity(new Intent(mcontext, activity_show_diary_page.class)
+                                .putExtra("docid", docid)
+                                .putExtra("folder_name", folder_name)
+//                        .putExtra("result",full_path)
+                );
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();
             }
@@ -119,7 +127,7 @@ public class activity_diary extends activity_main {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mcontext, activity_add_diary_content.class));
+                startActivity(new Intent(mcontext, activity_add_diary.class));
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();
             }
@@ -129,7 +137,7 @@ public class activity_diary extends activity_main {
     public void onBackPressed() {
         super.onBackPressed();
 
-        startActivity(new Intent(mcontext, activity_home.class));
+        startActivity(new Intent(mcontext, activity_diary_content.class));
         isDestroyed();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 

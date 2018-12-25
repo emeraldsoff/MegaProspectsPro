@@ -58,6 +58,7 @@
       <w>firebase</w>
       <w>firestore</w>
       <w>fmanager</w>
+      <w>frontlooksigner</w>
       <w>ftransaction</w>
       <w>futuredate</w>
       <w>gbtn</w>
@@ -67,6 +68,7 @@
       <w>gopro</w>
       <w>govtservice</w>
       <w>ifval</w>
+      <w>inappmessaging</w>
       <w>infoshow</w>
       <w>isdcode</w>
       <w>loginactivity</w>
@@ -100,6 +102,7 @@
       <w>spous</w>
       <w>tele</w>
       <w>telephoneno</w>
+      <w>timestmp</w>
       <w>uemail</w>
       <w>ufname</w>
       <w>uidf</w>

@@ -12,33 +12,32 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import inc.emeraldsoff.megaprospectspro.R;
-import inc.emeraldsoff.megaprospectspro.model.diarycard_page_gen;
+import inc.emeraldsoff.megaprospectspro.model.diarycard_folder_gen;
 
 //import com.google.android.material.card.MaterialCardView;
 
-public class diary_adapter extends FirestoreRecyclerAdapter<diarycard_page_gen, diary_adapter.diary_holder> {
+public class diary_folder_adapter extends FirestoreRecyclerAdapter<diarycard_folder_gen, diary_folder_adapter.diary_holder> {
     //    private SimpleDateFormat fullFormat_time = new SimpleDateFormat("YYYY-MMMM-dd', 'EEEE', 'hh:MM:SS a", Locale.US);
     private onItemClickListener listener;
     private onLongItemClickListener listener2;
 
-    public diary_adapter(@NonNull FirestoreRecyclerOptions<diarycard_page_gen> options) {
+    public diary_folder_adapter(@NonNull FirestoreRecyclerOptions<diarycard_folder_gen> options) {
         super(options);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull diary_holder holder, int position, @NonNull final diarycard_page_gen model) {
+    protected void onBindViewHolder(@NonNull diary_holder holder, int position, @NonNull final diarycard_folder_gen model) {
         int x = position + 1;
         holder.diary_no.setText(String.valueOf(x));
-        holder.diary_date.setText(model.getTime());
-        holder.diary_note.setText(model.getdata());
-//        holder.cli_birthday.setText(model.getBirthday());
+        holder.diary_date.setText(model.getFolder_doc());
+//        holder.diary_note.setText(model.getDiary_page());
     }
 
     @NonNull
     @Override
     public diary_holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_diary, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_folder_diary, parent, false);
         return new diary_holder(view);
     }
 
@@ -74,7 +73,6 @@ public class diary_adapter extends FirestoreRecyclerAdapter<diarycard_page_gen, 
             super(itemView);
             diary_no = itemView.findViewById(R.id.diary_no);
             diary_date = itemView.findViewById(R.id.diary_date);
-            diary_note = itemView.findViewById(R.id.diary_note);
 //            cli_dob = itemView.findViewById(R.id.cli_dob);
 //            cli_birthday = itemView.findViewById(R.id.cli_birthday);
 

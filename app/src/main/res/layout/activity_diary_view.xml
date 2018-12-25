@@ -8,8 +8,8 @@
     android:background="@drawable/ui_background_style1"
     android:fitsSystemWindows="true"
     tools:context=".activity_main"
-    tools:ignore="HardcodedText"
-    tools:openDrawer="start">
+    tools:ignore="HardcodedText">
+    <!--tools:openDrawer="start">-->
 
     <LinearLayout
         android:id="@+id/toolbar_holder"
@@ -27,7 +27,25 @@
             android:fontFamily="@font/abeezee"
             android:maxLines="1"
             android:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Light" />
+            android:theme="@style/ThemeOverlay.MaterialComponents.Light">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/fui_transparent"
+                    android:drawableEnd="@drawable/ic_more_vert_24dp"
+                    android:gravity="end"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <!--<FrameLayout-->
         <!--android:id="@+id/fragment_container"-->
@@ -42,21 +60,20 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="wrap_content"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp">
 
                 <Button
-                    android:id="@+id/del_note"
+                    android:id="@+id/del"
                     android:layout_width="45dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_height="?attr/actionBarSize"
                     android:background="@color/fui_transparent"
-                    android:drawableEnd="@drawable/ic_edit_black_24dp"
+                    android:drawableEnd="@drawable/ic_delete_sweep_black_24dp"
                     android:elevation="8dp"
                     android:gravity="end|center"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -71,16 +88,17 @@
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                     android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/save_note"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/edit"
+                    app:layout_constraintStart_toEndOf="@+id/del"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
-                    android:id="@+id/save_note"
+                    android:id="@+id/edit"
                     android:layout_width="45dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_height="?attr/actionBarSize"
                     android:background="@color/fui_transparent"
                     android:drawableEnd="@drawable/ic_edit_black_24dp"
                     android:elevation="8dp"
