@@ -60,11 +60,14 @@
                 android:layout_margin="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:onClick="onClick"
+                android:gravity="center"
+                android:drawableEnd="@drawable/ic_more_vert_black_24dp"
                 android:fontFamily="@font/abeezee_italic"
                 android:text="Date And Time"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:textColor="@android:color/black"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
